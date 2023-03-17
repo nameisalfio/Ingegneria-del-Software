@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Factory Method Pattern</title>
+<meta name="author" content="E. Tramontana">
+<link href="prism.css" rel="stylesheet" />
+</head>
+<body>
+
+<a href="bigliettiUmlClassi.png">
+<img alt="diagramma UML delle classi" src="bigliettiUmlClassi.png" width="400" align="middle" hspace="20"></a>
+
+<a href="bigliettiUmlSequenza.png">
+<img alt="diagramma UML di sequenza" src="bigliettiUmlSequenza.png" width="520" align="middle" hspace="0"></a>
+
+
+<pre><code class="language-java">// Codice Java che implementa il design pattern Factory Method
+
+// Posto e' un Product
+public interface Posto {
+	public String getPosizione();
+	public int getCosto();
+	public String getSettore();
+}
+</code></pre>
+
+<pre><code class="language-java">// Palco e' un ConcreteProduct
+import java.util.Random;
+
+public class Palco implements Posto {
+	private final int numero;
+
+	public Palco() {
+		numero = new Random().nextInt(20) + 1;
+	}
+
+	@Override
+	public int getCosto() {
+		if (numero > 10) return 50;
+		return 40;
+	}
+
+	@Override
+	public String getPosizione() {
+		return Integer.toString(numero);
+	}
+
+	@Override
+	public String getSettore() {
+		if (numero == 20) return "Centrale";
+		if (numero > 10) return "Verde";
+		return "Blu";
+	}
+}
+</code></pre>
+
+<pre><code class="language-java">// Platea e' un ConcreteProduct
+import java.util.Random;
+
+public class Platea implements Posto {
+	private final String[] nomi = { "A", "B", "C", "D", "E", "F" };
+	private final int numero;
+	private final int riga;
+
+	public Platea() {
+		numero = new Random().nextInt(10) + 1;
+		riga = new Random().nextInt(5) + 1;
+	}
+
+	@Override
+	public int getCosto() {
+		if (numero > 5 && rigaMax()) return 100;
+		if (numero > 5 && rigaMin()) return 80;
+		return 60;
+	}
+
+	@Override
+	public String getPosizione() {
+		return nomi[riga].concat(Integer.toString(numero));
+	}
+
+	@Override
+	public String getSettore() {
+		if (riga == 0) return "Riservato";
+		return "Normale";
+	}
+
+	private boolean rigaMax() {
+		return (riga >= 1 && riga <= 4);
+	}
+
+	private boolean rigaMin() {
+		return (riga == 0 || riga == 5);
+	}
+}
+</code></pre>
+
+<pre><code class="language-java">// GnrPosizioni e' un Creator
+import java.util.Set;
+import java.util.TreeSet;
+public abstract class GnrPosizioni { // versione 1.1
+	private static final int MAXPOSTI = 100;
+	private final Set< String > pst = new TreeSet< >(); // set di posti
+
+  	// metodo che rimanda alla sottoclasse l'istanziazione della classe
+	public Posto prendiNumero(int x) {
+		if (pst.size() == MAXPOSTI) return null;
+		// il chiamante dovrebbe controllare se null
+		Posto p;
+		do {  				  // fino a quando non trova un posto libero
+			p = getPosto(x); // chiama metodo della sottoclasse
+		} while (pst.contains(p.getPosizione()));
+		pst.add(p.getPosizione());
+		return p; 
+	}
+
+	public void printPostiOccupati() {
+		for (String s : pst)
+			System.out.print(s + " ");
+	}
+
+	// il metodo factory e' dichiarato ma non implementato
+	public abstract Posto getPosto(int tipo);
+}
+</code></pre>
+
+<pre><code class="language-java">// Posizioni e' un ConcreteCreator con un metodo factory
+public class Posizioni extends GnrPosizioni {
+	// metodo factory che ritorna una istanza
+	@Override
+	public Posto getPosto(int tipo) {
+		// crea l'istanza di un ConcreteProduct 
+		if (1 == tipo) return new Palco();
+		return new Platea();
+	}
+}
+</code></pre>
+
+<pre><code class="language-java">// Biglietto e' un client del Product Posto
+public class Biglietto {
+	private String nome;
+	private final Posto pos;
+	
+	public Biglietto(Posto p) {
+		pos = p;
+	}
+	
+	public void intesta(String s) {
+		nome = s;
+	}
+	
+	public String getDettagli() {
+		return nome.concat(" ").concat(pos.getPosizione());
+	}
+	
+	public String getNome() {
+		return nome;
+	}
+
+	public int getCosto() {
+		return pos.getCosto();
+	}
+}
+</code></pre>
+
+<pre><code class="language-java">// Classe con il main che usa il ConcreteCreator
+public class MainBiglietti {
+	private static Posizioni cp = new Posizioni();
+
+	public static void main(String[] args) {
+		Posto pos = cp.prendiNumero(0);
+		Biglietto b = new Biglietto(pos);
+		b.intesta("Mario");
+		System.out.println("Costo " + b.getCosto());
+
+		new Biglietto(cp.prendiNumero(0));
+		new Biglietto(cp.prendiNumero(0));
+		cp.printPostiOccupati();
+	}
+}
+</code></pre>
+
+<script src="prism.js"></script>
+
+<!--Start of StatCounter Code-->
+<script type="text/javascript" language="javascript">
+var sc_project=963348;
+var sc_invisible=1;
+var sc_partition=7;
+var sc_security="fb08d370";
+</script>
+<script type="text/javascript" language="javascript" src="http://www.statcounter.com/counter/counter.js"></script><noscript><a href="http://www.statcounter.com/" target="_blank"><img  src="http://c8.statcounter.com/counter.php?sc_project=963348&amp;java=0&amp;security=fb08d370&amp;invisible=1" alt="website statistics" border="0"></a> </noscript>
+<!--End of StatCounter Code-->
+
+</body>
+</html>
