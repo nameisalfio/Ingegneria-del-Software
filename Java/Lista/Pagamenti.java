@@ -1,5 +1,9 @@
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.LineNumberReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Pagamenti 
 {
@@ -25,13 +29,6 @@ public class Pagamenti
             importi.add(riga);
     }
 
-    /*public void calcolaSomma()
-    {
-        totale = 0;
-        for(String v : importi)
-            totale += Float.parseFloat(v);
-    }*/
-
     public void calcolaSomma() {
         totale = 0;
         for (String v : importi) {
@@ -41,14 +38,6 @@ public class Pagamenti
             }
         }
     }
-
-    /*public void CalcolaMassimo()
-    {
-        massimo = 0;
-        for(String v : importi)
-            if(massimo < Float.parseFloat(v))
-                massimo = Float.parseFloat(v);
-    }*/
 
     public void CalcolaMassimo()
     {
@@ -74,22 +63,4 @@ public class Pagamenti
 
     public float getSomma(){return totale;}
 
-    public static void main(String[] args)
-    {
-        final Pagamenti p = new Pagamenti();
-
-        try
-        {
-            p.leggiFile("/home/alfiospoto/Scrivania/Anno 22-23 Università-DMI/Ingegneria del Software/Lista/", "file.txt");
-        }
-        catch(IOException e)
-        {
-            System.out.println("Errore durante la lettura del file: " + e.getMessage());
-        }
-
-        p.calcolaSomma();
-        p.CalcolaMassimo();
-        float somma = p.getSomma();
-        System.out.println("Somma = " + somma);
-    }
 }

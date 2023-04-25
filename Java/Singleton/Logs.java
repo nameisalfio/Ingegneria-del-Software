@@ -41,7 +41,7 @@ public class Logs
     {
         String toReturn = "";
         for(String str : list)
-            toReturn = toReturn.concat(str);
+            toReturn = toReturn.concat(str).concat(" -- ");
         return toReturn;
     }
 

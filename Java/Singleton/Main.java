@@ -21,6 +21,7 @@ public class Main
 
         // Svuota la lista dei messaggi di log
         logs.empty();
+
     }
 }
 
