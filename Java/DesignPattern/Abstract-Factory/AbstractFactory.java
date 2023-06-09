@@ -1,4 +1,7 @@
-//Abstract Factory
-public interface AbstractFactory {
-    public Shape getShape(String shape);
+//ABSTRACT FACTORY
+
+public interface AbstractFactory 
+{
+    Chair createChair();
+    Table createTable();
 }
