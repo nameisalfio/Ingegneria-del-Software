@@ -1,24 +1,18 @@
-// CLIENT
-public class Client 
-{
-    public static void main(String[] args) 
-    {
-        Light light = new Light();  //Receiver
+public class Client {
 
-        Command turnOnCommand = new TurnOnLightCommand(light);  //C.Command1
-        Command turnOffCommand = new TurnOffLightCommand(light);    //C.Command2
+    private static Receiver receiver = new Receiver();
+    private static Invoker invoker = new Invoker();
+    public static void main(String[] args) {
 
-        RemoteControl remoteControl = new RemoteControl();  //Invoker
-        remoteControl.setCommand(0, turnOnCommand, turnOffCommand);
-
-        // Press the on button
-        System.out.println("Accendo la luce...");
-        remoteControl.pressOnButton(0);
-
-        System.out.println("");
-
-        // Press the off button
-        System.out.println("Spengo la luce...");
-        remoteControl.pressOffButton(0);
+        Command command1 = new ConcreteCommand1(receiver);
+        Command command2 = new ConcreteCommand2(receiver);
+        
+        // Esecuzione del primo comando
+        invoker.setCommand(command1);
+        invoker.executeCommand();
+        
+        // Esecuzione del secondo comando
+        invoker.setCommand(command2);
+        invoker.executeCommand();
     }
 }
