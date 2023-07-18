@@ -21,7 +21,7 @@ public class Main {
                                                 new Triangolo(3, 4, 5, 7, 8, 9));
 
     public static void main(String[] args) {
-        System.out.println(metodo7());
+        System.out.println(metodo7_2());
     }
 
     public static List<Auto> metodo1(){
@@ -107,7 +107,7 @@ public class Main {
 
     public static Boolean metodo7_2(){
         Double first = al.get(0).costo();
-        return al.stream()
+        return !al.stream()
                  .anyMatch(a -> a.costo() < first);  // torna true se almeno un elemento viola l'ordinamento
     }
      
