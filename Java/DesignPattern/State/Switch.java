@@ -13,7 +13,7 @@ class Switch
         this.state = state;
     }
 
-    public void pressButton() 
+    public void pressButton() // request
     {
         state.handle(this);
     }

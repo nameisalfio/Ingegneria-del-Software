@@ -2,8 +2,10 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+import java.util.Map;
 
 public class Main 
 {
@@ -14,7 +16,7 @@ public class Main
 
     public static void main(String[] args) 
     {
-        es11();
+        es14();
     }
 
     static void es1()
@@ -193,5 +195,54 @@ public class Main
                                                                            .max(LocalDate::compareTo)
                                                                            .orElse(LocalDate.MIN)));
         result.ifPresent(System.out::println);
+    }
+
+    static void es12(Integer min, Integer max)
+    {
+        // Persone che hanno un età compresa tra min e max
+
+        List<Persona> list = List.of(new Persona("Kent", 29, "CTO"),
+                                new Persona("Luigi", 37, "Programmer"),
+                                new Persona("Andrea", 26, "GrLeader"),
+                                new Persona("Sofia", 42, "Programmer"),
+                                new Persona("Alfio",63, "Programmer"));
+        
+        List<Persona> res = list.stream()
+                                .filter(p -> p.age() > min && p.age() < max)
+                                .toList();
+        for (Persona p : res)
+            System.out.println(p);
+    }
+
+    static void es13()
+    {
+        // Somma delle età delle persone
+
+        List<Persona> list = List.of(new Persona("Kent", 29, "CTO"),
+                        new Persona("Luigi", 37, "Programmer"),
+                        new Persona("Andrea", 26, "GrLeader"),
+                        new Persona("Sofia", 42, "Programmer"),
+                        new Persona("Alfio",63, "Programmer"));
+        
+        Integer res = list.stream()
+                          .map(p -> p.age)
+                          .reduce(0, (accum, v) -> (accum + v));
+
+        System.out.println("Result: " + res);
+    }
+
+    static void es14()
+    {
+        // Tornare una mappa di Nome, Ruolo
+
+        List<Persona> list = List.of(new Persona("Kent", 29, "CTO"),
+                new Persona("Luigi", 37, "Programmer"),
+                new Persona("Andrea", 26, "GrLeader"),
+                new Persona("Sofia", 42, "Programmer"),
+                new Persona("Alfio",63, "Programmer"));
+        
+        Map<String, String> m = list.stream()
+                                        .collect(Collectors.toMap(Persona::name, Persona::rule));
+        System.out.println(m);
     }
 }
